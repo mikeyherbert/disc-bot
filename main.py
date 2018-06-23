@@ -1,6 +1,8 @@
 import discord
 
-TOKEN = ''
+f = open("key.txt")
+TOKEN = f.read().strip("\n")  # this is to make sure I don't steal your bot
+f.close()
 
 client = discord.Client()
 
