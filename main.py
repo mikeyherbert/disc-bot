@@ -27,49 +27,20 @@ async def on_message(message):
         else:
             await client.send_message(message.channel, "Please specify user")
             print("Please specify user")
-            
     
-    if message.content.startswith('!promote-to-expert'):
-        data = message.content.split(" ")
-        if len(data) > 1:
-            if data[1].startswith("<@") and data[1].endswith(">"):
-                await client.send_message(message.server.get_channel('459992736662290442'),"Congratulations " + data[1] + ", you have been promoted to . You have proved to be worthy of this title over the time you have spent as a *Programmer*. We implore you to help others and demonstrate your knowledge by helping others to succeed.")
-                memID = data[1].strip("<@").strip(">")
-                mem = message.server.get_member(memID)
-                role = discord.utils.get(message.server.roles, name="Expert")
-                await client.add_roles(mem, role)
-                
-        else:
-            await client.send_message(message.channel, "Please specify user")
-            print("Please specify user")
-            
-    if message.content.startswith('!promote-to-manager'):
-        data = message.content.split(" ")
-        if len(data) > 1:
-            if data[1].startswith("<@") and data[1].endswith(">"):
-                await client.send_message(message.server.get_channel('459992736662290442'),"Congratulations " + data[1] + ", you have been promoted to become a member of the @&Management team. You have proved to be worthy of this title over the time you have spent as an Expert. We implore you to help others and demonstrate your knowledge by helping others to succeed, while keeping the server in good running order and carrying out the tasks required of you. Should you not wish to undertake this role, contact <@334376933771182080>, and you will be promoted to *Senior Expert*, showing that you have the required level of knowledge for *Management*, but do not wish to have the same levels of responsibility.")
-                memID = data[1].strip("<@").strip(">")
-                mem = message.server.get_member(memID)
-                role = discord.utils.get(message.server.roles, name="Management")
-                await client.add_roles(mem, role)
-                
-        else:
-            await client.send_message(message.channel, "Please specify user")
-            print("Please specify user")
-            
-    if message.content.startswith('!promote-to-SE'):
-        data = message.content.split(" ")
-        if len(data) > 1:
-            if data[1].startswith("<@") and data[1].endswith(">"):
-                await client.send_message(message.server.get_channel('459992736662290442'),"Congratulations " + data[1] + ", you have been promoted to become a *Senior Expert*. You have proved your expertise time and time again and because of this <@334376933771182080> has decided to promote you to *Senior Expert*. Please demonstrate your immense bank of knowledge by helping others and producing awesome code.")
-                memID = data[1].strip("<@").strip(">")
-                mem = message.server.get_member(memID)
-                role = discord.utils.get(message.server.roles, name="Senior Expert")
-                await client.add_roles(mem, role)
-                
-        else:
-            await client.send_message(message.channel, "Please specify user")
-            print("Please specify user")
+    roles = [["expert", "SE", "manager"], ["Expert", "Senior Expert", "Management"]]
+	if message.content.startswith('!promote'):
+		data = message.content.split(' ')
+		if (data[1].startswith("<@") and data[1].endswith(">")) and (data[2] in roles[0]):  # check valid command
+			memID = data[1].strip("<@").strip(">")
+			mem = message.server.get_member(memID)
+			newrole = roles[1][(roles[0].index(data[2]))]
+			role = discord.utils.get(message.server.roles, name=newrole)
+			await client.add_roles(mem, role)
+			await client.send_message(message.server.get_channel('459992736662290442'),"Congratulations " + data[1] + ", you have been promoted to become a *" + newrole + "*. You have proved your expertise time and time again and because of this <@334376933771182080> has decided to promote you to *" + newrole + "*. Please demonstrate your immense bank of knowledge by helping others and producing awesome code.")
+			
+		else:
+			await client.send_message(message.channel, "Usage:\n`!promote <@username> <role>`\nAvailable roles:\n`expert`, `SE`, `manager`")
     
 
 @client.event
