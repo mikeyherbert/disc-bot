@@ -29,18 +29,18 @@ async def on_message(message):
             print("Please specify user")
     
     roles = [["expert", "SE", "manager"], ["Expert", "Senior Expert", "Management"]]
-	if message.content.startswith('!promote'):
-		data = message.content.split(' ')
-		if (data[1].startswith("<@") and data[1].endswith(">")) and (data[2] in roles[0]):  # check valid command
-			memID = data[1].strip("<@").strip(">")
-			mem = message.server.get_member(memID)
-			newrole = roles[1][(roles[0].index(data[2]))]
-			role = discord.utils.get(message.server.roles, name=newrole)
-			await client.add_roles(mem, role)
-			await client.send_message(message.server.get_channel('459992736662290442'),"Congratulations " + data[1] + ", you have been promoted to become a *" + newrole + "*. You have proved your expertise time and time again and because of this <@334376933771182080> has decided to promote you to *" + newrole + "*. Please demonstrate your immense bank of knowledge by helping others and producing awesome code.")
-			
-		else:
-			await client.send_message(message.channel, "Usage:\n`!promote <@username> <role>`\nAvailable roles:\n`expert`, `SE`, `manager`")
+    if message.content.startswith('!promote'):
+        data = message.content.split(' ')
+        if (data[1].startswith("<@") and data[1].endswith(">")) and (data[2] in roles[0]):  # check valid command
+            memID = data[1].strip("<@").strip(">")
+            mem = message.server.get_member(memID)
+            newrole = roles[1][(roles[0].index(data[2]))]
+            role = discord.utils.get(message.server.roles, name=newrole)
+            await client.add_roles(mem, role)
+            await client.send_message(message.server.get_channel('459992736662290442'),"Congratulations " + data[1] + ", you have been promoted to become a *" + newrole + "*. You have proved your expertise time and time again and because of this <@334376933771182080> has decided to promote you to *" + newrole + "*. Please demonstrate your immense bank of knowledge by helping others and producing awesome code.")
+            
+        else:
+            await client.send_message(message.channel, "Usage:\n`!promote <@username> <role>`\nAvailable roles:\n`expert`, `SE`, `manager`")
     
 
 @client.event
