@@ -45,13 +45,10 @@ async def on_message(message):
         # we then search for words and ping people
         i = 0
         pings = ""
-        while True:  # maybe re-order the list to use a different searching algorithm?
-            try:
-                if helpers[i][0] in message.content:
-                    for ping in helpers[i]:  # this will also include the word that triggered it. Maybe we could format it better?
-                        pings += ping + " "
-            except IndexError:  # when we've gone through the list
-                break
+        for word in helpers:  # maybe re-order the list to use a different searching algorithm?
+            if word[0] in message.content:
+                for ping in word:  # this will also include the word that triggered it. Maybe we could format it better?
+                    pings += ping + " "
                 
         await client.send_message(message.channel, "Maybe these people can help:\n" + pings)
     
