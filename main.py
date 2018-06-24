@@ -47,10 +47,11 @@ async def on_message(message):
         pings = ""
         for word in helpers:  # maybe re-order the list to use a different searching algorithm?
             if word[0] in message.content:
-                for ping in word:  # this will also include the word that triggered it. Maybe we could format it better?
+                pings += "\n"+word[0]+": "
+                for ping in word[1:]:  # this will also include the word that triggered it. Maybe we could format it better?
                     pings += ping + " "
                 
-        await client.send_message(message.channel, "Maybe these people can help:\n" + pings)
+        await client.send_message(message.channel, "Maybe these people can help:" + pings)
     
 
 @client.event
