@@ -39,6 +39,21 @@ async def on_message(message):
             
         else:
             await client.send_message(message.channel, "Usage:\n`!promote <@username> <role>`\nAvailable roles:\n`expert`, `SE`, `manager`")
+            
+    helpers = []  # format: [["word", "helper1", "helper2"], ["word", "helper1", "helper2"]]
+    if message.content.startswith('!help'):
+        # we then search for words and ping people
+        i = 0
+        pings = ""
+        while True:  # maybe re-order the list to use a different searching algorithm?
+            try:
+                if helpers[i][0] in message.content:
+                    for ping in helpers[i]:  # this will also include the word that triggered it. Maybe we could format it better?
+                        pings += ping + " "
+            except IndexError:  # when we've gone through the list
+                break
+                
+        await client.send_message(message.channel, "Maybe these people can help:\n" + pings)
     
 
 @client.event
