@@ -41,9 +41,9 @@ async def on_message(message):
             await client.send_message(message.channel, "Usage:\n`!promote <@username> <role>`\nAvailable roles:\n`expert`, `SE`, `manager`")
             
     helpers = []  # format: [["word", "helper1", "helper2"], ["word", "helper1", "helper2"]]
+    # move this to external file later
     if message.content.startswith('!help'):
         # we then search for words and ping people
-        i = 0
         pings = ""
         for word in helpers:  # maybe re-order the list to use a different searching algorithm?
             if word[0] in message.content:
@@ -52,8 +52,37 @@ async def on_message(message):
                     pings += ping + ", "  # adds words
                 
         await client.send_message(message.channel, "Maybe these people can help:" + pings)
-    
-
+        
+    if message.content.startswith('!add-help-trigger'):
+        trigger = message.content.split(' ', 1)[1]  # get the word/phrase to add
+        # check if the phrase is already in the array
+        duplicate = False
+        for word in helpers:
+            if trigger == word[0]:  # if the trigger is already in array
+                duplicate = True
+        
+        if duplicate:
+            await client.send_message(message.channel, "This word/phrase has already been created.\nTo add helpers to it run: `!add-helper <word> <@helper>`")
+        else:
+            helpers.append(trigger)
+            await client.send_message(message.channel, trigger + "has been added to the help list")
+            
+    if message.content.startswith('!add-helper'):
+        trigger = message.content.split(' ')[1]  # get the word/phrase to add the helper to
+        helper = message.content.split(' ')[2]  # get the helper to add
+        
+        done = False
+        for word in helpers:
+            if word[0] == trigger:  # if correct word array
+                word.append(helper)  # add the helper to the word array
+                done = True  # so we know it worked
+                
+        if done:
+            await client.send_message(message.channel, "success!")
+        else:
+            await client.send_message(message.channel, "failure. most likely '"+trigger+"' isn't in the list of triggers, so helpers can't be added. Try `!add-help-trigger"+trigger+"`.")
+        
+        
 @client.event
 async def on_ready():
     print('Logged in as')
