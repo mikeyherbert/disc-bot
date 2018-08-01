@@ -17,7 +17,7 @@ async def on_message(message):
         if(len(data) > 1):
             if(data[1].startswith("<@") and data[1].endswith(">")):
                 await client.send_message(message.server.get_channel('459422821718818817'), "Please welcome " + data[1] + " to the server as a full member! " + data[1] + ", you have been promoted to Programmer. If you prove to <@334376933771182080>, a member of @&Management, or another @&Expert that you are worthy of the title of *Expert*, then you will be promoted duely. For now, please do not hesitate to read the *Rules*, and make your way over to *General* and the other member-only channels!")
-                mem = message.mentions[0]
+                mem = message.mentions[0]  # gets the guy to promote
                 role1 = discord.utils.get(message.server.roles, name="Recruit")
                 role2 = discord.utils.get(message.server.roles, name="Programmer")
                 await client.remove_roles(mem, role1)
@@ -31,7 +31,7 @@ async def on_message(message):
     if message.content.startswith('!promote'):
         data = message.content.split(' ')
         if (data[1].startswith("<@") and data[1].endswith(">")) and (data[2] in roles[0]):  # check valid command
-            mem = message.mentions[0]
+            mem = message.mentions[0]  # gets the guy to promote
             newrole = roles[1][(roles[0].index(data[2]))]
             role = discord.utils.get(message.server.roles, name=newrole)
             await client.add_roles(mem, role)
@@ -47,9 +47,9 @@ async def on_message(message):
         pings = ""
         for word in helpers:  # maybe re-order the list to use a different searching algorithm?
             if word[0] in message.content:
-                pings += "\n"+word[0]+": "
-                for ping in word[1:]:  # this will also include the word that triggered it. Maybe we could format it better?
-                    pings += ping + " "
+                pings += "\n"+word[0]+": "  # includes word that triggered it
+                for ping in word[1:]:
+                    pings += ping + ", "  # adds words
                 
         await client.send_message(message.channel, "Maybe these people can help:" + pings)
     
